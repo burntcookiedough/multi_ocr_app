@@ -5,7 +5,15 @@ pillow
 pdf2image
 google-cloud-vision
 boto3
-numpy
 easyocr
-paddlepaddle
-paddleocr
+python-dotenv
+
+# Critical: Pin numpy < 2.0.0 to avoid ABI issues with PaddlePaddle 2.x
+numpy<2.0.0
+
+# Critical: Use stable Paddle versions compatible with this code
+paddlepaddle==2.6.2
+paddleocr>=2.7.3
+
+# Note: For GPU support, you might need to install paddlepaddle-gpu instead,
+# refer to https://www.paddlepaddle.org.cn/en/install/quick

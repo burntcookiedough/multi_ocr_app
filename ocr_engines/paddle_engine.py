@@ -4,7 +4,7 @@ import paddle
 from paddleocr import PaddleOCR
 
 # ✅ CRITICAL FIX: disable oneDNN
-paddle.set_flags({'FLAGS_use_onednn': False})
+# paddle.set_flags({'FLAGS_use_onednn': False})
 
 # ✅ Initialize once
 ocr = PaddleOCR(

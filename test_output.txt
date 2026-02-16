@@ -1,4 +1,4 @@
 Testing PaddleOCR integration...
 Extracted Text:
-Error in PaddleOCR: PaddleOCR.predict() got an unexpected keyword argument 'cls'
-FAILURE: PaddleOCR did not extract the expected text.
+Hello PaddleOCR
+SUCCESS: PaddleOCR extracted the expected text.
