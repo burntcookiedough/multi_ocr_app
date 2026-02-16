@@ -107,15 +107,45 @@ if (-not (Check-Command "pdftoppm" "Poppler")) {
     }
 }
 
-# 3. Python Check
-$pyCommand = "python"
+# 3. Python Check (Enforcing 3.10 - 3.12)
+$pyCommand = $null
+$supportedVersions = @("3.10", "3.11", "3.12")
+$targetVersion = $null
+
 if (Get-Command "py" -ErrorAction SilentlyContinue) {
     try {
         $versions = py --list
-        if ($versions -match "3.10") {
-            $pyCommand = "py -3.10"
+        foreach ($ver in $supportedVersions) {
+            if ($versions -match " $ver") {
+                $pyCommand = "py -$ver"
+                $targetVersion = $ver
+                Write-Host "Found Python $ver via py launcher." -ForegroundColor Green
+                break
+            }
         }
     } catch {}
+}
+
+# Fallback: Check if 'python' in PATH is a supported version
+if (-not $pyCommand) {
+    try {
+        $currentVer = python --version 2>&1
+        foreach ($ver in $supportedVersions) {
+            if ($currentVer -match " $ver") {
+                $pyCommand = "python"
+                $targetVersion = $ver
+                Write-Host "Default 'python' is version $ver. Using it." -ForegroundColor Green
+                break
+            }
+        }
+    } catch {}
+}
+
+if (-not $pyCommand) {
+    Write-Error "CRITICAL: No compatible Python version found (3.10, 3.11, or 3.12)."
+    Write-Host "PaddleOCR requires Numpy < 2.0.0, which does not support Python 3.13 yet." -ForegroundColor Red
+    Write-Host "Please install Python 3.10 from python.org and try again." -ForegroundColor Yellow
+    exit 1
 }
 
 # 4. Environment Setup
