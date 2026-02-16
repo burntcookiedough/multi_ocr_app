@@ -12,7 +12,7 @@ import sys
 # Add project root to system path to ensure modules are found
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from ocr_engines import tesseract_engine, google_vision_engine, aws_textract_engine, easyocr_engine, paddle_engine
+from ocr_engines import tesseract_engine, easyocr_engine, paddle_engine
 
 app = Flask(__name__)
 app.secret_key = 'super_secret_key_for_demo_purposes'
@@ -32,10 +32,6 @@ def allowed_file(filename):
 def get_ocr_engine(engine_name):
     if engine_name == 'tesseract':
         return tesseract_engine
-    elif engine_name == 'google':
-        return google_vision_engine
-    elif engine_name == 'aws':
-        return aws_textract_engine
     elif engine_name == 'easyocr':
         return easyocr_engine
     elif engine_name == 'paddle':

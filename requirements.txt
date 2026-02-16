@@ -1,19 +1,12 @@
-flask
-pytesseract
-opencv-python-headless
-pillow
-pdf2image
-google-cloud-vision
-boto3
-easyocr
-python-dotenv
-
-# Critical: Pin numpy < 2.0.0 to avoid ABI issues with PaddlePaddle 2.x
+flask==3.1.2
+python-dotenv==1.2.1
+opencv-python-headless==4.11.0.86
+pillow==12.1.1
 numpy<2.0.0
-
-# Critical: Use stable Paddle versions compatible with this code
 paddlepaddle==2.6.2
 paddleocr>=2.7.3
-
-# Note: For GPU support, you might need to install paddlepaddle-gpu instead,
-# refer to https://www.paddlepaddle.org.cn/en/install/quick
+easyocr==1.7.2
+pytesseract==0.3.13
+pdf2image==1.17.0
+# Core dependencies for the above
+requests

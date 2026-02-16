@@ -4,7 +4,18 @@ import os
 from preprocessing.image_preprocessing import preprocess_image
 
 # POINT THIS TO YOUR TESSERACT EXECUTABLE IF NOT IN PATH
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# POINT THIS TO YOUR TESSERACT EXECUTABLE IF NOT IN PATH
+import shutil
+if not shutil.which('tesseract'):
+    possible_paths = [
+        r'C:\Program Files\Tesseract-OCR\tesseract.exe',
+        r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe',
+        r'C:\Users\anshu\AppData\Local\Tesseract-OCR\tesseract.exe'
+    ]
+    for p in possible_paths:
+        if os.path.exists(p):
+            pytesseract.pytesseract.tesseract_cmd = p
+            break
 
 def extract_text(image_path, preprocess=True):
     """
