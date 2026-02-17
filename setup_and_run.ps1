@@ -117,10 +117,24 @@ if (Get-Command "py" -ErrorAction SilentlyContinue) {
         $versions = py --list
         foreach ($ver in $supportedVersions) {
             if ($versions -match " $ver") {
-                $pyCommand = "py -$ver"
-                $targetVersion = $ver
-                Write-Host "Found Python $ver via py launcher." -ForegroundColor Green
-                break
+                # Validate that it actually works
+                $tempCmd = "py -$ver"
+                try {
+                    # Try to run version check. 
+                    # We use cmd /c to avoid PowerShell's direct invocation error stopping the script if it fails hard.
+                    $process = Start-Process -FilePath "py" -ArgumentList "-$ver", "--version" -NoNewWindow -Wait -PassThru -ErrorAction SilentlyContinue
+                    
+                    if ($process.ExitCode -eq 0) {
+                        $pyCommand = $tempCmd
+                        $targetVersion = $ver
+                        Write-Host "Found active Python $ver via py launcher." -ForegroundColor Green
+                        break
+                    } else {
+                        Write-Warning "Detected Python $ver in py launcher, but it appears broken or missing (ExitCode $($process.ExitCode)). Skipping..."
+                    }
+                } catch {
+                    Write-Warning "Detected Python $ver in py launcher, but it failed to run. Skipping..."
+                }
             }
         }
     } catch {}
